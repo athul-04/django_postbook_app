@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/comment.css' %}">
+    
+</head>
+<body>
+    <div class="cmt-box-top">
+
+        <div class="comment-box">
+            <h2 style="color:#4637F2;">Comments Posted</h2>
+            {% for comment in full_comments %}
+            <div  class="comment-flex-box">
+                <div class="img-name div1">
+                    <img class="image" src="{{comment.user.image.url}}" alt="">
+                    
+                </div>
+                <div class="div2">
+                    <p class="name">{{comment.user.user_name}}</p>
+                </div>
+                <div class="div3">
+                    <p>{{comment.comments}}</p>
+                </div>
+                
+            </div>
+            {% endfor %}
+            
+        </div>
+        <button class="btn"><a href="{% url 'myapp:homepage' usr_id=user.id %}">Homepage</a></button>
+    </div>
+</body>
+</html>

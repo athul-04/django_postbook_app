@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/homepage.css' %}">
+<script src="https://kit.fontawesome.com/abd9023e7d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="{% url 'myapp:upload_pictures' usr_id=user.id %}">Upload Pictures</a>
+  <a id="premium_audio_upload" href="{% url 'myapp:upload_audio' usr_id=user.id %}">Upload Audio <img class="p_logo" src="{% static 'images/premium/premium.jpg' %}" alt=""></a>
+  <a id="premium_audio" href="{% url 'myapp:audio_page' usr_id=user.id %}">Audio <img class="p_logo" src="{% static 'images/premium/premium.jpg' %}" alt=""></a>
+  <a id="myuploads" href="{% url 'myapp:myuploads' usr_id=user.id %}">My Uploads</a>
+  <a class="log" href="{% url 'myapp:index' %}">Logout</a>
+</div>
+<p style="display:none ;" id="premium">{{user.premium}}</p>
+<div id="main">
+  <a href="{% url 'myapp:profile' usr_id=user.id %}"><img class="image2" src="{{user.image.url}}" alt=""></a>
+  <img class="pre_logo" src="{% static 'images/premium/premium.jpg' %}" alt="">
+  <a class="openbtn" onclick="openNav()"><img class="image" src="{% static 'images/homepage/settings.png' %}" alt=""></a>  
+</div>
+<p class="user_id" style="display:none ;">{{user.id}}</p>
+<div class="top_next_main">
+</div>
+{% for upload,like in zip_list %}
+<div class="upload_layout">
+<div class="image-container">
+  <div class="test">
+    <div class="test2" class="dif">
+      <a href="{% url 'myapp:common_profile' usr_id=upload.user.id %}"><img class="image8" src="{{upload.user.image.url}}" alt=""></a>
+    </div>
+    <div class="dif">
+      <p style="display:inline ;" class="u-info">{{upload.user.user_name}}</p>
+    </div>
+  </div>
+  <div class="image2-container">
+    <img class="image3" src="{{upload.image.url}}" alt="">
+    <p class="next">{{upload.content}}</p>
+  </div>
+  <div class="like">
+    <div>
+      <p class="post_id" style="display:none ;" >{{upload.upload_id}}</p>
+      <p class="hidden" style="display:none">{{like}}</p>
+      <p style="display:inline ;"><form id="form-submit">
+        {% csrf_token %}
+        <button class="s_btn" type="submit"><img class="like_img" src="{% static 'images/like/before_like.jpg' %}" alt=""></button><p  class="likes">{{upload.likes}}</p>
+      </form></p>
+      
+    </div>
+
+
+
+    <div>
+      <p><a class="a_in" href="{% url 'myapp:comment' usr_id=user.id post_id=upload.upload_id  %}"><img class="cmt_img" src="{% static 'images/comment/comment.png' %}" alt=""></a></p>
+    </div>
+    <div>
+        <p class="share"><img class="cmt_img" src="{% static 'images/comment/write.png' %}" alt=""></p>
+    </div>
+  </div>
+  <p class="share_num" style="display:none ;">0</p>
+  <div class="comment-flex">
+    <form class="form_comment">
+      {% csrf_token %}
+      <input  type="text" name="comment" class="cmt" id="comment" placeholder="Enter your comment">
+      <a href="" class="sub"><img class="send" src="{% static 'images/like/send.png' %}" alt=""></a>
+    </form>
+  </div>
+</div>
+</div>
+{% endfor %}
+
+<script>
+
+$(document).ready(function(){
+
+  
+
+  let share=document.getElementsByClassName("share");
+  let form_comment=document.getElementsByClassName("form_comment");
+  for(let i=0;i<share.length;i++){
+    share[i].addEventListener('click',function(){
+      let share_num=document.getElementsByClassName("share_num")[i].innerHTML;
+      if(share_num=="0"){
+        form_comment[i].style.height="40px";
+        form_comment[i].style.width="60%";
+        form_comment[i].style.opacity="1";
+        document.getElementsByClassName("share_num")[i].innerHTML="1";
+      }
+      if(share_num=="1"){
+        form_comment[i].style.height="0px";
+        form_comment[i].style.width="0%";
+        form_comment[i].style.opacity="0";
+        document.getElementsByClassName("share_num")[i].innerHTML="0";
+      }
+      
+    })
+  }
+
+  let s_len=document.getElementsByClassName("s_btn");
+  let l=document.getElementsByClassName("likes");
+  let hidden=document.getElementsByClassName("hidden");
+  let like_img=document.getElementsByClassName("like_img");
+  for(let i=0;i<hidden.length;i++){
+    if(hidden[i].innerHTML=="1"){
+      like_img[i].src="{% static 'images/like/after_like.jpg' %}";
+    }
+    if(hidden[i].innerHTML=="0"){
+      like_img[i].src="{% static 'images/like/before_like.jpg' %}";
+    }
+  }
+  for(let i=0;i<s_len.length;i++){
+    s_len[i].addEventListener('click',function(e){
+      e.preventDefault();
+      let user_id=document.getElementsByClassName("user_id")[0].innerHTML;
+      let post_id=document.getElementsByClassName("post_id")[i].innerHTML;
+      user_id=parseInt(user_id)
+      post_id=parseInt(post_id)
+      let Like=document.getElementsByClassName("likes")[i];
+      let hidden=document.getElementsByClassName("hidden")[i];
+      let inner_like=l[i].innerHTML
+      console.log(inner_like)
+      let h=document.getElementsByClassName("hidden")[i].innerHTML;
+            if(h=="0"){
+                like_img[i].src="{% static 'images/like/after_like.jpg' %}";
+                let b=parseInt(inner_like);
+                Like.innerHTML=b+1
+                hidden.innerHTML=1
+            }
+            else{
+                like_img[i].src="{% static 'images/like/before_like.jpg' %}";
+                let b=parseInt(inner_like);
+                Like.innerHTML=b-1
+                hidden.innerHTML=0
+
+            }
+      
+      $.ajax({
+            type:'POST',
+            url:'like/'+post_id+"/"+user_id+'/',
+            data:{
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success:function(){
+
+            }
+        })
+    })
+    
+  }
+  let sub=document.getElementsByClassName("sub");
+  for(let i=0;i<sub.length;i++){
+    sub[i].addEventListener('click',function(e){
+      e.preventDefault();
+      let user_id=document.getElementsByClassName("user_id")[0].innerHTML;
+      let post_id=document.getElementsByClassName("post_id")[i].innerHTML;
+      user_id=parseInt(user_id)
+      post_id=parseInt(post_id)
+      $.ajax({
+            type:'POST',
+            url:'comment_upload/'+post_id+"/"+user_id+'/',
+            data:{
+                comments:document.getElementsByClassName("cmt")[i].value,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success:function(){
+
+            }
+        })
+        document.getElementsByClassName("cmt")[i].value="";
+
+
+    })
+  }
+  let premium=document.getElementById("premium");
+  if(premium.innerHTML=="0"){
+    document.getElementById("premium_audio_upload").style.pointerEvents="none";
+    document.getElementById("premium_audio").style.pointerEvents="none";
+    document.getElementsByClassName("pre_logo")[0].style.display="none";
+  }
+  
+
+})
+
+let s_len=document.getElementsByClassName("s_btn")
+
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginRight = "250px";
+  document.getElementById("main").style.backgroundColor="white";
+  document.querySelector(".openbtn").style.backgroundColor="white";
+  let bar=document.querySelectorAll(".image-container");
+
+  let test=document.querySelectorAll(".test");
+  let audio_layout=document.querySelectorAll("audio_layout");
+  let next=document.querySelectorAll(".next");
+  for(let i=0;i<bar.length;i++){
+    bar[i].style.width="80%";
+    test[i].style.marginLeft="25%";
+    next[i].style.marginLeft="25%";
+    
+    
+  }
+  for(let i=0;i<audio_layout.length;i++){
+    audio_layout[i].style.marginLeft="8%";
+  }
+
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginRight= "0";
+  document.getElementById("main").style.backgroundColor="#4637F2";
+  document.querySelector(".openbtn").style.backgroundColor="#4637F2";
+  let test=document.querySelectorAll(".test");
+  let bar=document.querySelectorAll(".image-container");
+
+  let next=document.querySelectorAll(".next");
+  let audio_layout=document.querySelectorAll("audio_layout");
+  for(let i=0;i<bar.length;i++){
+    bar[i].style.width="97%";
+    test[i].style.marginLeft="29.3%";
+    next[i].style.marginLeft="29.3%";
+  
+    
+  }
+  for(let i=0;i<audio_layout.length;i++){
+    audio_layout[i].style.marginLeft="16%";
+  }
+
+}
+</script>
+</body>
+</html>

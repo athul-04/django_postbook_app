@@ -1,0 +1,54 @@
+.comment-flex-box{
+    display: flex;
+    align-items: stretch;
+    border: 2px solid blue;
+    margin-top: 2px;
+}
+.comment-box{
+    border:2px solid black;
+    width:45%;
+    padding:14px;
+    margin: auto;
+    margin-top: 4%;
+    border-radius: 5px;
+}
+.comment-box-top{
+    position: relative;
+}
+.image{
+    width:100px;
+    height:60px;
+    border-radius:50%;
+    border: 2px solid black;
+    margin:5px;
+}
+
+.div2{
+    padding:20px;
+    color:black;
+}
+.div3{
+    padding-left: 60px;
+}
+
+.btn{
+    position: absolute;
+    left:5%;
+    top:2%;
+    background-color:#4637F2;
+    border: 2px solid black;
+    border-radius: 7px;
+    padding:12px;
+    font-weight: bold;
+
+}
+a{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.div1{
+    width: 100px;
+}
+

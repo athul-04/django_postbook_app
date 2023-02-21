@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'styles/homepage.css' %}">
+</head>
+<body>
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="{% url 'myapp:homepage' usr_id=user.id %}">Homepage</a>
+    <a href="{% url 'myapp:upload_pictures' usr_id=user.id %}">Upload Pictures</a>
+    <a id="premium_audio_upload" href="{% url 'myapp:upload_audio' usr_id=user.id %}">Upload Audio <img class="p_logo" src="{% static 'images/premium/premium.jpg' %}" alt=""></a>
+    <a id="premium_audio" href="{% url 'myapp:audio_page' usr_id=user.id %}">Audio <img class="p_logo" src="{% static 'images/premium/premium.jpg' %}" alt=""></a>
+    <a class="log" href="{% url 'myapp:index' %}">Logout</a>
+  </div>
+      <p style="display:none ;" id="premium">{{user.premium}}</p>
+      <div id="main">
+        <a href="{% url 'myapp:profile' usr_id=user.id %}"><img class="image2" src="{{user.image.url}}" alt=""></a>
+        <img class="pre_logo" src="{% static 'images/premium/premium.jpg' %}" alt="">
+        <a class="openbtn" onclick="openNav()"><img class="image" src="{% static 'images/homepage/settings.png' %}" alt=""></a>  
+      </div>
+      <p class="user_id" style="display:none ;">{{user.id}}</p>
+      <div class="top_next_main">
+      </div>
+{% for audio in all_audio %}
+<div class="audio_layout">
+<div class="image-container">
+  <div class="test">
+    <div class="test2" class="dif">
+      <a href=""><img class="image8" src="{{audio.user.image.url}}" alt=""></a>
+    </div>
+    <div class="dif">
+      <p style="display:inline ;" class="u-info">{{audio.user.user_name}}</p>
+    </div>
+  </div>
+  <div class="image2-container audio_container">
+    <div class="loader load_css">
+      <div class="justify-content-center jimu-primary-loading"></div>
+    </div>
+    <audio src="{{audio.audio.url}}" class="myAudio" ></audio>
+    <p class="audio_status" style="display:none ;">0</p>
+    <img class="play_audio play2" src="{% static 'images/audio_player/pause_btn.png' %}" alt="">
+    <p class="audio_name">{{audio.audio_name}}</p>
+  </div>
+</div>
+</div>
+
+{% endfor %}
+
+<script>
+$(document).ready(function(){
+
+    let play_audio=document.getElementsByClassName("play_audio");
+    let myaudio=document.getElementsByClassName("myAudio");
+    let audio_status=document.getElementsByClassName("audio_status");
+    let load_animation=document.getElementsByClassName("load_css");
+    for(let i=0;i<play_audio.length;i++){
+    play_audio[i].addEventListener('click',function(){
+        console.log("hai")
+        let status=audio_status[i].innerHTML
+        if(status=="0"){
+            play_audio[i].src="{% static 'images/audio_player/play_btn2.png' %}";
+            myaudio[i].play();
+            load_animation[i].style.display="block";
+            audio_status[i].innerHTML="1";
+        }
+        if(status=="1"){
+            play_audio[i].src="{% static 'images/audio_player/pause_btn.png' %}";
+            myaudio[i].pause();
+            load_animation[i].style.display="none";
+            audio_status[i].innerHTML="0";
+        }
+    
+    
+    })
+    
+    }
+    let premium=document.getElementById("premium");
+    if(premium.innerHTML=="0"){
+      document.getElementById("premium_audio_upload").style.pointerEvents="none";
+      document.getElementById("premium_audio").style.pointerEvents="none";
+      document.getElementsByClassName("pre_logo")[0].style.display="none";
+  }
+})
+
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginRight = "250px";
+  document.getElementById("main").style.backgroundColor="white";
+  document.querySelector(".openbtn").style.backgroundColor="white";
+
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginRight= "0";
+  document.getElementById("main").style.backgroundColor="#4637F2";
+  document.querySelector(".openbtn").style.backgroundColor="#4637F2";
+
+  
+ 
+
+}
+</script>
+
+</body>
+</html>

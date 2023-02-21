@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <title>PB</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+</head>
+<body>
+<div class="top-div">
+    {% include 'error.html' %}
+    <div class="logout-div">
+        <p>Are You sure you want to log out?</p>
+        <div class="logout-flex-box">
+            <div>
+                <button class="btn-log"><a class="btn-c" href="{% url 'myapp:index' %}">Yes</a></button>
+            </div>
+            <div>
+                <button class="btn-log"><a class="btn-c" href="{% url 'myapp:profile' usr_id=user.id %}">Cancel</a></button>
+            </div>
+        </div>
+    </div>
+    <div class="log-display">
+    <img class="icn" onclick="logout()" src="{% static 'images/profile/logout.png' %}" alt="">
+    <img src="{% static 'images/profile/camera.png' %}" alt="" class="pic-edit">
+    <div class="form-div">
+        <form method="post" class="image-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file1" class="im" id="im" ><br>
+            <button type="submit" class="in-btn">Update Image</button>
+        </form>
+    </div>
+    <div class="main-div">
+        <p id="premium" style="display:none ;" >{{user.premium}}</p>
+        <div class="flex-box" id="flex-box" class="i">
+            <div class="img-container">
+                <img onclick="changedp()" class="image" src="{{user.image.url}}" alt=""><br>
+                <img class="pre_logo" src="{% static 'images/premium/premium.jpg' %}" alt="">
+                <a><p class="edit" onclick="editviewer()">Edit</p></a>
+                <div class="bio-div">
+                    <p>{{usr_bio.bio_name}}</p>
+                    <p>{{usr_bio.bio}}</p>
+                    <p>{{usr_bio.links}}</p>
+                    <button  class="in-btn"><a href="{% url 'myapp:homepage' usr_id=user.id %}">Done</a></button>
+                </div>
+            </div>
+            <div class="i" >
+                <div  id="box">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="text" name="bioname" placeholder="Name" class="in" id="name"><br>
+                        <input type="text" name="bio" placeholder="Bio" class="in" id="bio"><br>
+                        <input type="text" name="link" placeholder="Link" class="in" id="link"><br>
+                        <button type="submit" class="in-btn">Done</button>
+                    </form>
+                </div>
+                 
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="premium_btn_box">
+        <a class="premium_btn" href="{% url 'myapp:purchase_premium' usr_id=user.id %}">Purchase Premium</a>
+    </div>
+</div>
+
+    <script>
+
+        $(document).ready(function(){
+            let premium=document.getElementById("premium");
+            if(premium.innerHTML=="0"){
+
+                document.getElementsByClassName("pre_logo")[0].style.display="none";
+            }
+            if(premium.innerHTML=="1"){
+                document.getElementsByClassName("premium_btn")[0].innerHTML="Degrade Premium";
+            }
+        })
+        function editviewer(){
+            
+            let a=document.getElementById("box").style.opacity;
+            if(a=="1"){
+                document.getElementsByClassName("pic-edit")[0].style.left="32%";
+                document.getElementsByClassName('flex-box')[0].style.marginLeft="20%";
+                document.getElementById("box").style.opacity="0";
+                document.getElementById("box").style.visibility="hidden";
+            }
+            else{
+                document.getElementsByClassName("pic-edit")[0].style.left="17%";
+                document.getElementById("box").style.opacity="1";
+                // document.getElementsByClassName("image")[0].style.width="25%";
+                
+                // document.getElementsById("flex-box").style.marginLeft="0px";
+                document.getElementById("box").style.visibility="visible";
+                document.getElementById("box").style.display="inline-block";
+                document.getElementsByClassName('flex-box')[0].style.marginLeft="0%";
+            }
+            
+            
+        }
+
+        function changedp(){
+            document.getElementsByClassName("main-div")[0].style.opacity="0.1";
+            document.getElementsByClassName("form-div")[0].style.visibility="visible";
+            document.getElementsByClassName("pic-edit")[0].style.opacity="0";
+            
+        }
+        function logout(){
+           document.getElementsByClassName('log-display')[0].style.opacity="0";
+           document.getElementsByClassName("logout-div")[0].style.opacity="1";
+
+
+        }
+    </script>
+</body>
+</html>

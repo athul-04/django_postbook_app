@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PB</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/register.css' %}">
+</head>
+<body>
+    <div class="top">
+        {% include 'error.html' %}
+        <div class="flex-box" class="i">
+            <div class="img-container">
+                <img  class="image" src="{% static 'images/register/logo.png' %}" alt="">
+            </div>
+            <div class="i" >
+                <div class="form-box">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="username" placeholder="Username" class="in" id="username"><br>
+                        <input type="password" name="password" placeholder="Password" class="in" id="password"><br>
+                        <button type="submit" class="in-btn">Login</button>
+                    </form>
+                    <p class="or">or</p>
+                <button class="in-ca" ><a class="a" href="{% url 'myapp:create_acnt' %}">Create Account</a></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

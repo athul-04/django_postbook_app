@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/homepage.css' %}">
+</head>
+<body>
+    <button class="btn_re"><a href="{% url 'myapp:homepage' usr_id=user.id %}">Homepage</a></button>
+    <h2 style="color:#4637F2;text-align: center;">My Uploads:</h2>
+    {% for upload in uploads %}
+    <div class="image-container">
+        <div class="test">
+          <div class="test2" class="dif">
+            <a href=""><img class="image8" src="{{upload.user.image.url}}" alt=""></a>
+          </div>
+          <div class="dif">
+            <p style="display:inline ;" class="u-info">{{upload.user.user_name}}</p>
+          </div>
+        </div>
+        <div class="image2-container">
+          <img class="image3" src="{{upload.image.url}}" alt="">
+        </div>
+
+        <a class="remove" href="{% url 'myapp:remove' post_id=upload.upload_id %}">Remove</a>
+    </div>
+    {% endfor %}
+{% for audio in all_audio %}
+<div class="audio_layout">
+<div class="image-container">
+  <div class="test">
+    <div class="test2" class="dif">
+      <a href=""><img class="image8" src="{{audio.user.image.url}}" alt=""></a>
+    </div>
+    <div class="dif">
+      <p style="display:inline ;" class="u-info">{{audio.user.user_name}}</p>
+    </div>
+  </div>
+  <div class="image2-container audio_container">
+    <div class="loader load_css">
+      <div class="justify-content-center jimu-primary-loading"></div>
+    </div>
+    <audio src="{{audio.audio.url}}" class="myAudio" ></audio>
+    <p class="audio_status" style="display:none ;">0</p>
+    <p class="audio_name" style="margin:auto;">{{audio.audio_name}}</p>
+    
+  </div>
+  
+</div>
+
+</div>
+<a class="remove_audio" href="{% url 'myapp:remove_audio' audio_id=audio.audio_id %}">Remove</a>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PB</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/common_profile.css' %}">
+</head>
+<body>
+<div class="top-div">
+    <div class="main-div">
+        <div class="flex-box" id="flex-box" class="i">
+            <div class="img-container">
+                <img class="image" src="{{user.image.url}}" alt=""><br>
+                <div class="bio-div">
+                    <p>{{usr_bio.bio_name}}</p>
+                    <p>{{usr_bio.bio}}</p>
+                    <p>{{usr_bio.links}}</p>
+                    <button  class="in-btn"><a href="{% url 'myapp:homepage' usr_id=user.id %}">Return</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
